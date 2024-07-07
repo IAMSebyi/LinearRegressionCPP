@@ -13,7 +13,7 @@ int main() {
 	// Read number of features and data points
 	inputData >> numOfFeatures >> numOfDataPoints;
 
-	// Read number of features and data points
+	// Initialize vectors for features and targetsx
 	std::vector<std::vector<float>> features (numOfDataPoints, std::vector<float> (numOfFeatures)); // Input independent variables
 	std::vector<float> targets (numOfDataPoints); // Output dependent variables
 
@@ -40,8 +40,8 @@ int main() {
 	parameters = model.GetParameters();
 
 	// Write the model parameters to output file
-	for (int i = 0; i < numOfFeatures + 1; i++) {
-		outputParameters << parameters[i] << " ";
+	for (const float& param : parameters) {
+		outputParameters << param << " ";
 	}
 
 	// Check if test data points are provided
@@ -53,10 +53,14 @@ int main() {
 		std::vector<float> testFeature (numOfFeatures);
 
 		for (int i = 0; i < numOfTestDataPoints; i++) {
+			std::cout << "Result for input { ";
+
 			for (int j = 0; j < numOfFeatures; j++) {
 				inputTest >> testFeature[j];
+				std::cout << testFeature[j] << " ";
 			}
-			std::cout << model.Predict(testFeature) << '\n';
+
+			std::cout << "}: " << model.Predict(testFeature, true) << '\n';
 		}
 	}
 

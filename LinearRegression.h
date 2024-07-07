@@ -2,34 +2,40 @@
 
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 class LinearRegression
 {
 public:
-	// CONSTRUCTOR
+	// Constructor
 	LinearRegression(const std::vector<std::vector<float>>& features, const std::vector<float>& targets, const int& numOfFeatures, const int& numOfDataPoints); 
 	
-	// METHODS
-	float Predict(std::vector<float> input) const;
-	void Train(float learningRate, int maxIterations = 7000);
+	// Methods
+	float Predict(std::vector<float> input, const bool test = false) const;
+	void Train(const float& learningRate, const int maxIterations = 40000);
 	std::vector<float> GetParameters() const;
 
 private:
-	// METHODS
-	float Cost() const; // squared error cost function
-	std::vector<float> CoeffGradient() const; // gradient of the cost function with respect to coeffiecents parameter
-	float InterceptGradient() const; // gradient of the cost function with respect to intercept parameter
+	// Methods
+	void Scale();
+	float Cost() const;
+	std::vector<float> CoeffGradient() const;
+	float InterceptGradient() const;
+	std::vector<float> GetMean() const;
+	std::vector<float> GetStandardDeviation(const std::vector<float>& mean) const;
 
-	// DATA POINTS
-	std::vector<std::vector<float>> features; // input independent variables
-	std::vector<float> targets; // output dependent variables
+	// Data members
+	std::vector<std::vector<float>> features;
+	std::vector<float> targets;
 
-	// MODEL PARAMETERS
+	// Model parameters
 	std::vector<float> coefficients;
 	float intercept;
 
-	// VARIABLES
+	// Variables
 	int numOfFeatures;
 	int numOfDataPoints;
+	std::vector<float> mean;
+	std::vector<float> standardDeviation;
 };
 
