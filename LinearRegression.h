@@ -8,7 +8,7 @@ class LinearRegression
 {
 public:
 	// Constructor
-	LinearRegression(const std::vector<std::vector<float>>& features, const std::vector<float>& targets, const int& numOfFeatures, const int& numOfDataPoints); 
+	LinearRegression(const std::vector<std::vector<float>>& features, const std::vector<float>& targets, const int& numOfFeatures, const int& numOfDataPoints, const float& regularizationParam);
 	
 	// Methods
 	float Predict(std::vector<float> input, const bool test = false) const;
@@ -35,6 +35,7 @@ private:
 	// Variables
 	int numOfFeatures;
 	int numOfDataPoints;
+	float regularizationParam;
 	std::vector<float> mean;
 	std::vector<float> standardDeviation;
 };

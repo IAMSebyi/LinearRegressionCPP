@@ -1,8 +1,8 @@
 #include "LinearRegression.h"
 
 // Constructor to initialize the LinearRegression object with features, targets, and dimensions
-LinearRegression::LinearRegression (const std::vector<std::vector<float>>& features, const std::vector<float>& targets, const int& numOfFeatures, const int& numOfDataPoints)
-	: features(features), targets(targets), numOfFeatures(numOfFeatures), numOfDataPoints(numOfDataPoints), coefficients(numOfFeatures, 0), intercept(0)
+LinearRegression::LinearRegression (const std::vector<std::vector<float>>& features, const std::vector<float>& targets, const int& numOfFeatures, const int& numOfDataPoints, const float& regularizationParam)
+	: features(features), targets(targets), numOfFeatures(numOfFeatures), numOfDataPoints(numOfDataPoints), coefficients(numOfFeatures, 0), intercept(0), regularizationParam(regularizationParam)
 {
 	Scale(); // Apply feature scaling upon initialization
 }
@@ -43,7 +43,7 @@ float LinearRegression::Predict(std::vector<float> input, const bool test) const
 	return result;
 }
 
-// Calculate the squared error cost function
+// Calculate the squared error cost function with L2 regularization
 float LinearRegression::Cost() const
 {
 	float result = 0;
@@ -51,6 +51,9 @@ float LinearRegression::Cost() const
 	for (int i = 0; i < numOfDataPoints; i++) {
 		float error = Predict(features[i]) - targets[i];
 		result += error * error;
+	}
+	for (int i = 0; i < numOfFeatures; i++) {
+		result += regularizationParam * coefficients[i] * coefficients[i];
 	}
 
 	result /= 2 * numOfDataPoints;
@@ -64,7 +67,7 @@ std::vector<float> LinearRegression::CoeffGradient() const
 	std::vector<float> result (numOfFeatures);
 
 	for (int i = 0; i < numOfFeatures; i++) {
-		float sum = 0;
+		float sum = regularizationParam * coefficients[i];
 		for (int j = 0; j < numOfDataPoints; j++) {
 			sum += (Predict(features[j]) - targets[j]) * features[j][i];
 		}

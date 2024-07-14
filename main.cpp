@@ -8,7 +8,7 @@ int main() {
 	std::ofstream outputParameters("parameters.txt");
 	
 	int numOfFeatures, numOfDataPoints, maxIterations = -1;
-	float learningRate;
+	float learningRate, regularizationParam = 0;
 
 	// Read number of features and data points
 	inputData >> numOfFeatures >> numOfDataPoints;
@@ -26,10 +26,10 @@ int main() {
 	}
 
 	// Read learning rate and max iterations
-	inputData >> learningRate >> maxIterations;
+	inputData >> learningRate >> maxIterations >> regularizationParam;
 
 	// Create LinearRegression model
-	LinearRegression model(features, targets, numOfFeatures, numOfDataPoints);
+	LinearRegression model(features, targets, numOfFeatures, numOfDataPoints, regularizationParam);
 
 	// Train the model
 	if (maxIterations == -1) model.Train(learningRate);
